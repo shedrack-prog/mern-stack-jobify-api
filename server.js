@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import 'express-async-errors';
 import morgan from 'morgan';
+import cors from 'cors';
 import mongoose from 'mongoose';
 
 mongoose.set('strictQuery', true);
@@ -37,7 +38,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // only when ready to deploy
 app.use(express.static(path.resolve(__dirname, '../client/build')));
-
+app.use(cors());
 app.use(express.json());
 app.use(helmet());
 app.use(xss());
