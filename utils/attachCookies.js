@@ -1,10 +1,12 @@
 const attachCookies = ({ res, token }) => {
-  const oneDay = 1000 * 60 * 60 * 24;
+  const twodays = 1000 * 60 * 60 * 48;
 
-  res.cookie("token", token, {
+  res.cookie('token', token, {
     httpOnly: true,
-    expires: new Date(Date.now() + oneDay),
-    secure: process.env.NODE_ENV === "production",
+    expires: new Date(Date.now() + twodays),
+    domain: 'http://localhost:3000/landing',
+    secure: process.env.NODE_ENV === 'production' ? true : false,
+    sameSite: 'none',
   });
 };
 
