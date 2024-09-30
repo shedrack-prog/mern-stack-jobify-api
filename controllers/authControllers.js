@@ -14,7 +14,8 @@ const register = async (req, res) => {
   if (userAlreadyExist) {
     throw new BadRequestError('Email already in use');
   }
-  const user = await User.create({ name, email, password });
+  const lowerCaseEmail =email.toLowerCase()
+  const user = await User.create({ name, email:lowerCaseEmail, password });
 
   const token = user.createJWT();
   attachCookies({ res, token });
@@ -37,8 +38,9 @@ const login = async (req, res) => {
   if (!email || !password) {
     throw new BadRequestError('Please provide all values');
   }
+  const lowerCaseEmail = email.toLowerCase()
 
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email:lowerCaseEmail }).select('+password');
 
   if (!user) {
     throw new UnauthenticatedError('No user found with email Provided');
@@ -66,11 +68,12 @@ const updateUser = async (req, res) => {
   if (!name || !email || !lastName || !location) {
     throw new BadRequestError('Please provide all values');
   }
+   const lowerCaseEmail = email.toLowerCase()
 
   const user = await User.findOne({ _id: req.user.userId });
 
   user.name = name;
-  user.email = email;
+  user.email = lowerCaseEmail;
   user.lastName = lastName;
   user.location = location;
 
